@@ -12,4 +12,6 @@ private String name;
 private String email;
 private String phone;
 private String patientId;
+private String dob;
+private String gender;
 }

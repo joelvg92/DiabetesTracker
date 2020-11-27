@@ -1,7 +1,9 @@
 package com.diabetes.tracker.usermanagement.controller;
 
 import com.diabetes.tracker.usermanagement.model.User;
+import com.diabetes.tracker.usermanagement.service.FHIRService;
 import com.diabetes.tracker.usermanagement.service.UserService;
+import org.hl7.fhir.r4.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FHIRService fhirService;
 
     @GetMapping("/getUserDetails")
     public User getUser(@RequestParam String name ) throws InterruptedException, ExecutionException{
