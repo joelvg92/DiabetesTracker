@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.diabetes.tracker</groupId>
-    <artifactId>usermanagement</artifactId>
+    <artifactId>diabetestracker</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>User Management</name>
+    <name>Diabetes Tracker</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

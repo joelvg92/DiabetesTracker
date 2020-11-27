@@ -2,13 +2,11 @@ package com.diabetes.tracker.usermanagement.service;
 
 import com.diabetes.tracker.usermanagement.model.User;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 //CRUD operations
@@ -38,6 +36,18 @@ public class UserService {
         }else {
             return null;
         }
+    }
+
+    public User validateUser(String username,String password) throws InterruptedException, ExecutionException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future =
+                dbFirestore.collection(COL_NAME).whereEqualTo("username", username).whereEqualTo("password",password).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        User user = null;
+        for (DocumentSnapshot document : documents) {
+            user = document.toObject(User.class);
+        }
+        return user;
     }
 
     public String updateUserDetails(User user) throws InterruptedException, ExecutionException {

@@ -75,13 +75,14 @@ public class FHIRService {
         } catch (ResourceNotFoundException | ParseException e) {
             return null;
         }
-        return resp.getEntry().get(0).getId();
+        String id = resp.getEntry().get(0).getResponse().getLocationElement().getValueAsString().split("/")[1];
+        return id;
 
     }
 
     public static void main(String [] args){
         FHIRService service = new FHIRService();
-        String id = service.createPatientFirebase("John Doe","male","1995-10-25");
+        String id = service.createPatientFirebase("John Doe3","male","1995-10-25");
         System.out.println(id);
     }
 
