@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     FHIRService fhirService;
 
-    @GetMapping("/getUserDetails")
+    @GetMapping("/user")
     public ResponseEntity<User> getUser(@RequestParam String name ) throws InterruptedException, ExecutionException{
         return ResponseEntity.ok().body(userService.getUserDetails(name));
     }
@@ -42,12 +42,12 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser")
+    @PutMapping("/user")
     public String updateUser(@RequestBody User User  ) throws InterruptedException, ExecutionException {
         return userService.updateUserDetails(User);
     }
 
-    @DeleteMapping("/deleteUser")
+    @DeleteMapping("/user")
     public String deleteUser(@RequestParam String name){
         return userService.deleteUser(name);
     }
