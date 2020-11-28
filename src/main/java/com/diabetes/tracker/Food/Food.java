@@ -14,7 +14,7 @@ public class Food {
         List<String> foods = new ArrayList<>();
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:food.csv")), '\n');
+            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:food1.csv")), '\n');
             while (reader.readNext() != null) {
                 for (String token : reader.readNext()) {
                     String splitRow[] = token.split(",");
