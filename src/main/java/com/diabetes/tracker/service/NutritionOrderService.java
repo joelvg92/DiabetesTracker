@@ -1,4 +1,4 @@
-package com.diabetes.tracker.usermanagement.service;
+package com.diabetes.tracker.service;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.api.MethodOutcome;

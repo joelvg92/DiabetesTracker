@@ -1,23 +1,25 @@
-package com.diabetes.tracker.usermanagement.Food;
+package com.diabetes.tracker.medication;
 
 import au.com.bytecode.opencsv.CSVReader;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+@Service
+public class Medication {
 
-public class Food {
-    public List<String> getFoodInfo(String food) {
+    public List<String> getMedicineInfo(String medication) {
         List<String> foods = new ArrayList<>();
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:food.csv")), '\n');
+            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:medicines.csv")), '\n');
             while (reader.readNext() != null) {
                 for (String token : reader.readNext()) {
                     String splitRow[] = token.split(",");
-                    if (splitRow[2].toLowerCase().contains(food.toLowerCase())) {
+                    if (splitRow[2].toLowerCase().contains(medication.toLowerCase())) {
                         foods.add(token);
                     }
                 }
@@ -34,4 +36,14 @@ public class Food {
         return foods;
     }
 
+
+    public static void main(String[] args) {
+        Medication m = new Medication();
+        List<String> medications = m.getMedicineInfo("metopro");
+        for(String medication:medications){
+            System.out.println(medication);
+        }
+
+
+    }
 }

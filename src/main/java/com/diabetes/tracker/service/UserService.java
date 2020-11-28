@@ -1,6 +1,6 @@
-package com.diabetes.tracker.usermanagement.service;
+package com.diabetes.tracker.service;
 
-import com.diabetes.tracker.usermanagement.model.User;
+import com.diabetes.tracker.model.User;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;

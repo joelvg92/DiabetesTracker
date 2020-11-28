@@ -1,13 +1,13 @@
-package com.diabetes.tracker.usermanagement;
+package com.diabetes.tracker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UsermanagementApplication {
+public class DiabetesTrackerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UsermanagementApplication.class, args);
+        SpringApplication.run(DiabetesTrackerApplication.class, args);
     }
 
 }

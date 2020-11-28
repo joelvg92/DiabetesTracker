@@ -1,9 +1,8 @@
-package com.diabetes.tracker.usermanagement.controller;
+package com.diabetes.tracker.controller;
 
-import com.diabetes.tracker.usermanagement.model.User;
-import com.diabetes.tracker.usermanagement.service.FHIRService;
-import com.diabetes.tracker.usermanagement.service.UserService;
-import org.hl7.fhir.r4.model.Patient;
+import com.diabetes.tracker.service.FHIRService;
+import com.diabetes.tracker.model.User;
+import com.diabetes.tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

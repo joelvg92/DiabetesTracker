@@ -1,4 +1,4 @@
-package com.diabetes.tracker.usermanagement;
+package com.diabetes.tracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

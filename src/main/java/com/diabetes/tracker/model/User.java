@@ -1,4 +1,4 @@
-package com.diabetes.tracker.usermanagement.model;
+package com.diabetes.tracker.model;
 
 import lombok.Getter;
 import lombok.Setter;
