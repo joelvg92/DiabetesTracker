@@ -27,7 +27,7 @@ public class MedicationService {
         client = ctx.newRestfulGenericClient(baseUrl);
     }
 
-    public String addMedication(String patientId,String name,String dosage,String unit){
+    public String addMedication(String patientId,String name,String dosage,String unit,String dateTime){
         MedicationAdministration medicationAdministration = new MedicationAdministration();
         Bundle resp = null;
         try {
@@ -38,13 +38,14 @@ public class MedicationService {
             MedicationAdministration.MedicationAdministrationDosageComponent medicationAdministrationDosageComponent = new MedicationAdministration.MedicationAdministrationDosageComponent();
             medicationAdministrationDosageComponent.setText(name);
             Quantity q = new Quantity();
-            q.setCode(name);
+            q.setCode(dosage);
             q.setSystem("Diabetic Tracker");
             q.setUnit(unit);
             medicationAdministrationDosageComponent.setDose(q);
             medicationAdministration.setDosage(medicationAdministrationDosageComponent);
             Annotation annotation = new Annotation();
             annotation.setTimeElement(DateTimeType.now());
+            annotation.setText(dateTime);
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             medicationAdministration.setNote(annotationList);
@@ -68,7 +69,7 @@ public class MedicationService {
         return id;
     }
 
-    public String updateMedication(String id,String patientId,String name,String dosage,String unit){
+    public String updateMedication(String id,String patientId,String name,String dosage,String unit,String dateTime){
         try {
             MedicationAdministration medicationAdministration = new MedicationAdministration();
             medicationAdministration.setId(id);
@@ -86,6 +87,7 @@ public class MedicationService {
             medicationAdministration.setDosage(medicationAdministrationDosageComponent);
             Annotation annotation = new Annotation();
             annotation.setTimeElement(DateTimeType.now());
+            annotation.setText(dateTime);
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             medicationAdministration.setNote(annotationList);
