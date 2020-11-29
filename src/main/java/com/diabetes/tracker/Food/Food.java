@@ -14,11 +14,11 @@ public class Food {
         List<String> foods = new ArrayList<>();
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:food1.csv")), '\n');
+            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:foods.csv")), '\n');
             while (reader.readNext() != null) {
                 for (String token : reader.readNext()) {
                     String splitRow[] = token.split(",");
-                    if (splitRow[2].toLowerCase().contains(food.toLowerCase())) {
+                    if (splitRow[1].toLowerCase().contains(food.toLowerCase())) {
                         foods.add(token);
                     }
                 }
@@ -33,6 +33,14 @@ public class Food {
             }
         }
         return foods;
+    }
+
+    public static void main(String [] args){
+        Food f= new Food();
+        List<String> foods= f.getFoodInfo("pasta");
+        for(String s:foods){
+            System.out.println(s);
+        }
     }
 
 }
