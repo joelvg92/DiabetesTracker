@@ -20,12 +20,12 @@ public class MedicationController {
 
     @PostMapping ("/medication")
     public ResponseEntity<String> addMedication(@RequestBody Map<String, String> json ) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok().body(medicationService.addMedication(json.get("patientId"),json.get("name"),json.get("dosage"),json.get("unit"),json.get("dateTime")));
+        return ResponseEntity.ok().body(medicationService.addMedication(json.get("patientId"),json.get("name"),json.get("dosage"),json.get("unit"),json.get("time")));
     }
 
     @PutMapping ("/medication/{id}")
-    public ResponseEntity<String> updateMedication(@RequestBody String id,@RequestBody String patientId,@RequestBody String name,@RequestBody String dosage,@RequestBody String unit,@RequestBody String dateTime ) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok().body(medicationService.updateMedication(id,patientId,name,dosage,unit,dateTime));
+    public ResponseEntity<String> updateMedication(@RequestBody Map<String, String> json) throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok().body(medicationService.updateMedication(json.get("id"),json.get("patientId"),json.get("name"),json.get("dosage"),json.get("unit"),json.get("time")));
     }
 
     @GetMapping ("/medication/{id}")
