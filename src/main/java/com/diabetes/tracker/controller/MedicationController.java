@@ -1,7 +1,9 @@
 package com.diabetes.tracker.controller;
 
 import com.diabetes.tracker.medication.Medication;
+import com.diabetes.tracker.model.ResultSetMedicaiton;
 import com.diabetes.tracker.service.MedicationService;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.MedicationAdministration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class MedicationController {
     }
 
     @GetMapping ("/medication/{id}")
-    public ResponseEntity<List<MedicationAdministration>> getMedication(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
+    public ResponseEntity<List<ResultSetMedicaiton>> getMedication(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
         return ResponseEntity.ok().body(medicationService.getMedicationByUser(id));
     }
 

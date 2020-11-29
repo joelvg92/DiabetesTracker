@@ -1,15 +1,21 @@
 package com.diabetes.tracker.service;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.util.BundleUtil;
+import com.diabetes.tracker.model.ResultSetMedicaiton;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,7 +40,7 @@ public class MedicationService {
             MedicationAdministration.MedicationAdministrationDosageComponent medicationAdministrationDosageComponent = new MedicationAdministration.MedicationAdministrationDosageComponent();
             medicationAdministrationDosageComponent.setText(name);
             Quantity q = new Quantity();
-            q.setCode(dosage);
+            q.setCode(dosage+" "+unit);
             q.setSystem("Diabetic Tracker");
             q.setUnit(unit);
             medicationAdministrationDosageComponent.setDose(q);
@@ -96,17 +102,30 @@ public class MedicationService {
         }
     }
 
-    public List<MedicationAdministration> getMedicationByUser(String user){
+    public List<ResultSetMedicaiton> getMedicationByUser(String user){
+        List<ResultSetMedicaiton>  medications = new ArrayList<>();
         Bundle bundle = client.search().forResource(MedicationAdministration.class)
                 .where(MedicationAdministration.SUBJECT.hasId(user))
                 .returnBundle(Bundle.class).execute();
-        ArrayList<MedicationAdministration> mList = new ArrayList<MedicationAdministration>();
-        mList.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, MedicationAdministration.class));
+        List<MedicationAdministration> medicationAdmins = new ArrayList<>();
+        medicationAdmins.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, MedicationAdministration.class));
         while (bundle.getLink(IBaseBundle.LINK_NEXT) != null) {
             bundle = client.loadPage().next(bundle).execute();
-            mList.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, MedicationAdministration.class));
+            medicationAdmins.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, MedicationAdministration.class));
         }
-        return mList;
+        for(MedicationAdministration medicationAdministration: medicationAdmins){
+            ResultSetMedicaiton resultSetMedicaiton = new ResultSetMedicaiton();
+            resultSetMedicaiton.setId(medicationAdministration.getId());
+            resultSetMedicaiton.setMedicationName(medicationAdministration.getDosage().getText());
+            Date dt =medicationAdministration.getNote().get(0).getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String strDate = dateFormat.format(dt);
+            resultSetMedicaiton.setTime(strDate+" "+medicationAdministration.getNote().get(0).getText());
+            resultSetMedicaiton.setUnit(medicationAdministration.getDosage().getDose().getUnit());
+            resultSetMedicaiton.setDosage(medicationAdministration.getDosage().getDose().getCode());
+            medications.add(resultSetMedicaiton);
+        }
+        return medications;
     }
 
     public boolean deleteMedicationBy(String id){
@@ -114,16 +133,5 @@ public class MedicationService {
         return true;
     }
 
-
-
-    public static void main(String [] args){
-        MedicationService medicationService = new MedicationService();
-       // String id = medicationService.updateMedication("264","262","metropolololo","100","mg");
-        List<MedicationAdministration> mList = medicationService.getMedicationByUser("262");
-        for(MedicationAdministration m:mList) {
-            System.out.println(m.getId());
-        }
-        medicationService.deleteMedicationBy("264");
-    }
 
 }
