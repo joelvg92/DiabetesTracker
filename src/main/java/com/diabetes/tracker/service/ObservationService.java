@@ -9,6 +9,7 @@ import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ObservationService {
         ctx = FhirContext.forR4();
         client = ctx.newRestfulGenericClient(baseUrl);
     }
-    public String addObservation(String patientId,String name,String dosage,String unit,String dateTime){
+    public String addObservation(String patientId,String reading,String description,String time){
         Observation observation = new Observation();
         Bundle resp = null;
         try {
@@ -30,15 +31,13 @@ public class ObservationService {
             r1.setDisplay(patientId);
             observation.setSubject(r1);
             Quantity q = new Quantity();
-            q.setCode(dosage);
+            q.setCode(reading);
             q.setSystem("Diabetic Tracker");
-            q.setUnit(unit);
+            q.setUnit(description);
             observation.setValue(q);
             observation.setStatus(Observation.ObservationStatus.FINAL);
             Annotation annotation = new Annotation();
-            annotation.setText(name);
-            annotation.setText(dateTime);
-            annotation.setTimeElement(DateTimeType.now());
+            annotation.setText(LocalDate.now()+":"+time);
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             observation.setNote(annotationList);
@@ -62,7 +61,7 @@ public class ObservationService {
         return id;
     }
 
-    public String updateObservation(String id,String patientId,String name,String dosage,String unit,String dateTime){
+    public String updateObservation(String id,String patientId,String reading,String description,String time){
         try {
             Observation observation = new Observation();
             observation.setId(id);
@@ -71,15 +70,13 @@ public class ObservationService {
             r1.setDisplay(patientId);
             observation.setSubject(r1);
             Quantity q = new Quantity();
-            q.setCode(dosage);
+            q.setCode(reading);
             q.setSystem("Diabetic Tracker");
-            q.setUnit(unit);
+            q.setUnit(description);
             observation.setValue(q);
             observation.setStatus(Observation.ObservationStatus.FINAL);
             Annotation annotation = new Annotation();
-            annotation.setText(name);
-            annotation.setText(dateTime);
-            annotation.setTimeElement(DateTimeType.now());
+            annotation.setText(LocalDate.now()+":"+time);
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             observation.setNote(annotationList);
@@ -112,7 +109,7 @@ public class ObservationService {
 
 
 
-    public static void main(String [] args){
+/*    public static void main(String [] args){
         ObservationService observationService = new ObservationService();
         String id = observationService.addObservation("262","Before meal","180","mg","Nov 29,10:30am");
         observationService.updateObservation(id,"262","metropolololo","100","mg","Nov 29,10:30am");
@@ -121,5 +118,5 @@ public class ObservationService {
             System.out.println(m.getId());
         }
         //observationService.deleteObservationBy(id);
-    }
+    }*/
 }

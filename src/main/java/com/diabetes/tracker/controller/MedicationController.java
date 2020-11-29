@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -18,8 +19,8 @@ public class MedicationController {
     Medication medication;
 
     @PostMapping ("/medication")
-    public ResponseEntity<String> addMedication(@RequestBody String patientId,@RequestBody String name,@RequestBody String dosage,@RequestBody String unit,@RequestBody String dateTime ) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok().body(medicationService.addMedication(patientId,name,dosage,unit,dateTime));
+    public ResponseEntity<String> addMedication(@RequestBody Map<String, String> json ) throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok().body(medicationService.addMedication(json.get("patientId"),json.get("name"),json.get("dosage"),json.get("unit"),json.get("dateTime")));
     }
 
     @PutMapping ("/medication/{id}")

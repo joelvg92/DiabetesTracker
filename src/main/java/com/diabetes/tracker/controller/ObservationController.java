@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -15,13 +16,13 @@ public class ObservationController {
     ObservationService observationService;
 
     @PostMapping ("/observation")
-    public ResponseEntity<String> addObservation(@RequestBody String patientId,@RequestBody String name,@RequestBody String dosage,@RequestBody String unit,@RequestBody String dateTime ) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok().body(observationService.addObservation(patientId,name,dosage,unit,dateTime));
+    public ResponseEntity<String> addObservation(@RequestBody Map<String, String> json ) throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok().body(observationService.addObservation(json.get("patientId"),json.get("reading"),json.get("description"),json.get("time")));
     }
 
     @PutMapping ("/observation/{id}")
-    public ResponseEntity<String> updateObservation(@RequestBody String id,@RequestBody String patientId,@RequestBody String name,@RequestBody String dosage,@RequestBody String unit,@RequestBody String dateTime ) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok().body(observationService.updateObservation(id,patientId,name,dosage,unit,dateTime));
+    public ResponseEntity<String> updateObservation(@RequestBody Map<String, String> json) throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok().body(observationService.updateObservation(json.get("id"),json.get("patientId"),json.get("reading"),json.get("description"),json.get("time")));
     }
 
     @GetMapping ("/observation/{id}")
