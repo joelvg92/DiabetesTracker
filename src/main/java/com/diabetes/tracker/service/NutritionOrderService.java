@@ -94,7 +94,7 @@ public class NutritionOrderService {
             nutritionOrder.setStatus(NutritionOrder.NutritionOrderStatus.ACTIVE);
             Annotation annotation = new Annotation();
             annotation.setText(dateTime);
-            annotation.setTimeElement(DateTimeType.now());
+            annotation.setTimeElement(DateTimeType.today());
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             nutritionOrder.setNote(annotationList);
@@ -127,9 +127,9 @@ public class NutritionOrderService {
             resultSetNutritionOrder.setMealSize(splitVal[0]);
             resultSetNutritionOrder.setCalories(Integer.toString(Integer.parseInt(splitVal[3]) * Integer.parseInt(splitVal[0])));
             Date dt =nutritionOrder.getNote().get(0).getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = dateFormat.format(dt);
-            resultSetNutritionOrder.setTime(strDate+" "+nutritionOrder.getNote().get(0).getText());
+            resultSetNutritionOrder.setTime(strDate+":"+nutritionOrder.getNote().get(0).getText());
             resultSetNutritionOrderList.add(resultSetNutritionOrder);
         }
         return resultSetNutritionOrderList;

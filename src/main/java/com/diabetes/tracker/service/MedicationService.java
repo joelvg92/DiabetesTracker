@@ -118,9 +118,9 @@ public class MedicationService {
             resultSetMedicaiton.setId(medicationAdministration.getId());
             resultSetMedicaiton.setMedicationName(medicationAdministration.getDosage().getText());
             Date dt =medicationAdministration.getNote().get(0).getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String strDate = dateFormat.format(dt);
-            resultSetMedicaiton.setTime(strDate+" "+medicationAdministration.getNote().get(0).getText());
+            resultSetMedicaiton.setTime(strDate+":"+medicationAdministration.getNote().get(0).getText());
             resultSetMedicaiton.setUnit(medicationAdministration.getDosage().getDose().getUnit());
             resultSetMedicaiton.setDosage(medicationAdministration.getDosage().getDose().getCode());
             medications.add(resultSetMedicaiton);

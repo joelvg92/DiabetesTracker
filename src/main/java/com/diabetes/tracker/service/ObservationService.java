@@ -38,7 +38,7 @@ public class ObservationService {
             observation.setValue(q);
             observation.setStatus(Observation.ObservationStatus.FINAL);
             Annotation annotation = new Annotation();
-            annotation.setText(LocalDate.now()+":"+time);
+            annotation.setText(LocalDate.now() +":"+time);
             List<Annotation> annotationList = new ArrayList<>();
             annotationList.add(annotation);
             observation.setNote(annotationList);
