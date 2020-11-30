@@ -1,11 +1,10 @@
 package com.diabetes.tracker.medication;
 
 import au.com.bytecode.opencsv.CSVReader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -15,7 +14,8 @@ public class Medication {
         List<String> foods = new ArrayList<>();
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:medicines.csv")), '\n');
+            InputStream input = new ClassPathResource("medicines.csv").getInputStream();
+            reader = new CSVReader(new InputStreamReader(input), '\n');
             while (reader.readNext() != null) {
                 for (String token : reader.readNext()) {
                     String splitRow[] = token.split(",");
