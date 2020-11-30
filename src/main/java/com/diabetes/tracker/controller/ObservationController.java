@@ -1,5 +1,6 @@
 package com.diabetes.tracker.controller;
 
+import com.diabetes.tracker.model.ResultSetObservation;
 import com.diabetes.tracker.service.ObservationService;
 import org.hl7.fhir.r4.model.Observation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ObservationController {
     }
 
     @GetMapping ("/observation/{id}")
-    public ResponseEntity<List<Observation>> getObservation(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
+    public ResponseEntity<List<ResultSetObservation>> getObservation(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
         return ResponseEntity.ok().body(observationService.getObservationByUser(id));
     }
 

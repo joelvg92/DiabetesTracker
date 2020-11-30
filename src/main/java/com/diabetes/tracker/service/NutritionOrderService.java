@@ -5,11 +5,15 @@ import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.util.BundleUtil;
+import com.diabetes.tracker.model.ResultSetNutritionOrder;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -103,7 +107,8 @@ public class NutritionOrderService {
         }
     }
 
-    public List<NutritionOrder> getNutritionOrderByUser(String user){
+    public List<ResultSetNutritionOrder> getNutritionOrderByUser(String user){
+        List<ResultSetNutritionOrder> resultSetNutritionOrderList = new ArrayList<>();
         Bundle bundle = client.search().forResource(NutritionOrder.class)
                 .where(NutritionOrder.PATIENT.hasId(user))
                 .returnBundle(Bundle.class).execute();
@@ -113,7 +118,21 @@ public class NutritionOrderService {
             bundle = client.loadPage().next(bundle).execute();
             mList.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, NutritionOrder.class));
         }
-        return mList;
+        for(NutritionOrder nutritionOrder: mList){
+            ResultSetNutritionOrder resultSetNutritionOrder = new ResultSetNutritionOrder();
+            resultSetNutritionOrder.setId(nutritionOrder.getId());
+            resultSetNutritionOrder.setFoodName(nutritionOrder.getFoodPreferenceModifier().get(0).getCoding().get(0).getDisplay());
+            String val =nutritionOrder.getFoodPreferenceModifier().get(0).getCoding().get(0).getCode();
+            String splitVal[] = val.split(":");
+            resultSetNutritionOrder.setMealSize(splitVal[0]);
+            resultSetNutritionOrder.setCalories(Integer.toString(Integer.parseInt(splitVal[3]) * Integer.parseInt(splitVal[0])));
+            Date dt =nutritionOrder.getNote().get(0).getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String strDate = dateFormat.format(dt);
+            resultSetNutritionOrder.setTime(strDate+" "+nutritionOrder.getNote().get(0).getText());
+            resultSetNutritionOrderList.add(resultSetNutritionOrder);
+        }
+        return resultSetNutritionOrderList;
     }
 
     public boolean deleteNutritionOrderBy(String id){
@@ -123,7 +142,7 @@ public class NutritionOrderService {
 
 
 
-    public static void main(String [] args){
+/*    public static void main(String [] args){
         NutritionOrderService nutritionOrderService = new NutritionOrderService();
         String id = nutritionOrderService.addNutritionOrder("262","Burger","180","mg","Nov 29,10:30am");
         nutritionOrderService.updateNutritionOrder(id,"262","Burger 2","100","mg","Nov 29,10:30am");
@@ -132,5 +151,5 @@ public class NutritionOrderService {
             System.out.println(m.getId());
         }
         //nutritionOrderService.deleteNutritionOrderBy(id);
-    }
+    }*/
 }

@@ -1,5 +1,6 @@
 package com.diabetes.tracker.controller;
 
+import com.diabetes.tracker.model.ResultSetNutritionOrder;
 import com.diabetes.tracker.service.NutritionOrderService;
 import org.hl7.fhir.r4.model.NutritionOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class NutritionOrderController {
     }
 
     @GetMapping("/nutritionOrder/{id}")
-    public ResponseEntity<List<NutritionOrder>> getNutritionOrder(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
+    public ResponseEntity<List<ResultSetNutritionOrder>> getNutritionOrder(@PathVariable(value="id") String id) throws InterruptedException, ExecutionException {
         return ResponseEntity.ok().body(nutritionOrderService.getNutritionOrderByUser(id));
     }
 

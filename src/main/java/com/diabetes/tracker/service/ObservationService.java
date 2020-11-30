@@ -5,6 +5,7 @@ import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.util.BundleUtil;
+import com.diabetes.tracker.model.ResultSetObservation;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,8 @@ public class ObservationService {
         }
     }
 
-    public List<Observation> getObservationByUser(String user){
+    public List<ResultSetObservation> getObservationByUser(String user){
+        List<ResultSetObservation> resultSetObservationList = new ArrayList<>();
         Bundle bundle = client.search().forResource(Observation.class)
                 .where(Observation.SUBJECT.hasId(user))
                 .returnBundle(Bundle.class).execute();
@@ -99,7 +101,15 @@ public class ObservationService {
             bundle = client.loadPage().next(bundle).execute();
             mList.addAll(BundleUtil.toListOfResourcesOfType(client.getFhirContext(), bundle, Observation.class));
         }
-        return mList;
+        for(Observation observation: mList){
+            ResultSetObservation resultSetObservation = new ResultSetObservation();
+            resultSetObservation.setId(observation.getId());
+            resultSetObservation.setDiabeticRecord(observation.getValueQuantity().getCode());
+            resultSetObservation.setMeal(observation.getValueQuantity().getUnit());
+            resultSetObservation.setTime(observation.getNote().get(0).getText());
+            resultSetObservationList.add(resultSetObservation);
+        }
+        return resultSetObservationList;
     }
 
     public boolean deleteObservationBy(String id){
